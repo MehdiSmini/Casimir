@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static ChoisirPseudo cp = new ChoisirPseudo();
-    private static MessageReseau mr = new MessageReseau();
+    public static MessageReseau mr = new MessageReseau();
     public static LireReseau lr = new LireReseau();
     private static User user = new User();
     private static EnvoyerMessage em = new EnvoyerMessage();
@@ -28,25 +28,24 @@ public class Main {
         */
       try {
           cp.choisir_pseudo(user,mr);
-          /*ThreadReception tr = new ThreadReception(lr);
-          ThreadBroadcastReception tbr = new ThreadBroadcastReception(lr);
-          tr.start();
-          tbr.start();*/
+
 
           lr.ThreadReceptionBroadcast();
+          lr.ThreadReception();
           TimeUnit.SECONDS.sleep(5);
-          mr.broadcast_udp_packet("Error");
-          System.out.println("Error envoyé");
-          ds.demande_session("Jean-Charles",mr);
-          em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles",mr);
+          //mr.broadcast_udp_packet("a");
+          //System.out.println("Error envoyé");
+          /*ds.demande_session("Jean-Charles",mr);
+          em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles",mr);*/
           String cmd ;
           while(true){
+              System.out.println(User.agents_actifs.toString());
             cmd = Sc.next();
             if(cmd.equals("msg")){
-                String cible = Sc.next();
                 System.out.println("Destinataire :");
-                String msg = Sc.next();
+                String cible = Sc.next();
                 System.out.println("Message :");
+                String msg = Sc.next();
                 em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible,mr);
             } else if (cmd.equals("quit")){
                 break;

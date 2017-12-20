@@ -32,6 +32,15 @@ public class Agent {
         this.port = port;
     }
 
+    @Override
+    public String toString() {
+        return "Agent{" +
+                "pseudo='" + pseudo + '\'' +
+                ", addr=" + addr +
+                ", port=" + port +
+                '}';
+    }
+
     public Agent(String pseudo, InetAddress addr, Integer port) {
 
         this.pseudo = pseudo;

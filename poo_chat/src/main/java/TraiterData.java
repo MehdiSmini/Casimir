@@ -68,7 +68,10 @@ public class TraiterData {
         type_data td = get_type(data);
         d = java.util.Arrays.copyOfRange(data,1,data.length);
         if( td == type_data.PSEUDO){
-            User.add_agent(traiter_pseudo(data,addr));
+            Agent agent= traiter_pseudo(d,addr);
+            if (!User.agents_actifs.containsKey(agent.getPseudo())) {
+            User.add_agent(traiter_pseudo(d,addr));
+            Main.mr.send_udp_packet("a"+User.getPseudo(),agent);}
         } else if( td == type_data.MESSAGE){
             rm.recevoir_message(traiter_message(d));
         } else if ( td == type_data.SESSION){

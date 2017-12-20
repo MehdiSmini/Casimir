@@ -34,9 +34,7 @@ public class LireReseau {
         try {
             while(true) {
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
-                System.out.println("Get_udp_packet step1");
                 receiverBroadcastSocket.receive(receivedPacket);
-                System.out.println(receivedPacket);
                 byte[] data = receivedPacket.getData();
                 td.traiter_data(data,receivedPacket.getAddress());
             }
@@ -52,6 +50,17 @@ public class LireReseau {
                     System.out.println("Thread Broadcast");
                     get_udp_broadcast_packet();
                 }
+            }
+        }.start();
+    }
+
+    public void ThreadReception(){
+        new Thread(){
+            @Override
+            public void run(){
+                System.out.println("Thread Reception");
+                get_udp_packet();
+
             }
         }.start();
     }

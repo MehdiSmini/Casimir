@@ -4,7 +4,7 @@ public class MessageReseau {
 
     public void send_udp_packet(String packet, Agent agent){
         try {
-            DatagramSocket senderSocket = new DatagramSocket(agent.getPort());
+            DatagramSocket senderSocket = new DatagramSocket();
             byte[] data = packet.getBytes();
             DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
             datagramPacket.setAddress(agent.getAddr() );
