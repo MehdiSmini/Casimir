@@ -23,6 +23,16 @@ public class Session {
         this.etat = etat;
     }
 
+    @Override
+    public String toString() {
+        return "Session{" +
+                "pseudo='" + pseudo + '\'' +
+                ", pseudo_cible='" + pseudo_cible + '\'' +
+                ", etat=" + etat +
+                ", messages=" + messages +
+                '}';
+    }
+
     private String pseudo;
     private String pseudo_cible;
     private Boolean etat;

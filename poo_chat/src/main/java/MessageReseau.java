@@ -10,6 +10,7 @@ public class MessageReseau {
             datagramPacket.setAddress(agent.getAddr() );
             datagramPacket.setPort(agent.getPort());
             senderSocket.send(datagramPacket);
+            System.out.println(packet+" envoye a "+ agent);
             senderSocket.close();
         } catch (java.io.IOException e){e.printStackTrace();}
     }
@@ -23,6 +24,7 @@ public class MessageReseau {
             datagramPacket.setAddress(InetAddress.getByName("255.255.255.255"));
             datagramPacket.setPort(5000);
             senderSocket.send(datagramPacket);
+            System.out.println(packet + " broadcaste");
             senderSocket.close();
         } catch (java.io.IOException e){e.printStackTrace();}
     }
