@@ -3,9 +3,9 @@ import java.util.*;
 
 public class DemandeSession {
 
-    public void demande_session(String pseudo_cible, MessageReseau mr){
+    public void demande_session(String pseudo_cible){
         Session session ;
-        mr.send_udp_packet("c" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
+        Main.mr.send_udp_packet("c" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
         while (elapsedTime < 500){

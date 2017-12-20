@@ -33,10 +33,9 @@ public class Main {
           lr.ThreadReceptionBroadcast();
           lr.ThreadReception();
           TimeUnit.SECONDS.sleep(5);
-          //mr.broadcast_udp_packet("a");
-          //System.out.println("Error envoyé");
-          /*ds.demande_session("Jean-Charles",mr);
-          em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles",mr);*/
+          //ds.demande_session("Jean-Charles");
+          TimeUnit.SECONDS.sleep(5);
+          //em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles");
           String cmd ;
           while(true){
               System.out.println(User.agents_actifs.toString());
@@ -46,7 +45,7 @@ public class Main {
                 String cible = Sc.next();
                 System.out.println("Message :");
                 String msg = Sc.next();
-                em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible,mr);
+                em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible);
             } else if (cmd.equals("quit")){
                 break;
             }
