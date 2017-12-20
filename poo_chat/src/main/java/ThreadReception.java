@@ -1,4 +1,4 @@
-public class ThreadReception  implements Runnable {
+public class ThreadReception  extends Thread {
     private LireReseau lr;
 
     public ThreadReception(LireReseau lr) {
@@ -7,6 +7,8 @@ public class ThreadReception  implements Runnable {
 
     @Override
     public void run(){
-        Main.lr.get_udp_broadcast_packet();
+        System.out.println("Thread Reception");
+        lr.get_udp_packet();
+
     }
 }

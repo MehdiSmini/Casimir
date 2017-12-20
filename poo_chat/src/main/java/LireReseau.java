@@ -13,7 +13,7 @@ public class LireReseau {
             receiverSocket.connect(receiverSocket.getLocalSocketAddress());
             User.setPort(receiverSocket.getPort());
             receiverBroadcastSocket = new DatagramSocket(5000);
-            receiverBroadcastSocket.connect();
+            receiverBroadcastSocket.setBroadcast(true);
         } catch (Exception e){e.printStackTrace();}
     }
 
@@ -25,7 +25,6 @@ public class LireReseau {
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
                 receiverSocket.receive(receivedPacket);
                 byte[] data = receivedPacket.getData();
-                receiverSocket.close();
                 td.traiter_data(data,receivedPacket.getAddress());
             }
         } catch ( java.io.IOException e){ e.printStackTrace();}
@@ -35,11 +34,25 @@ public class LireReseau {
         try {
             while(true) {
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
+                System.out.println("Get_udp_packet step1");
                 receiverBroadcastSocket.receive(receivedPacket);
+                System.out.println(receivedPacket);
                 byte[] data = receivedPacket.getData();
-                receiverBroadcastSocket.close();
                 td.traiter_data(data,receivedPacket.getAddress());
             }
         } catch ( java.io.IOException e){ e.printStackTrace();}
+    }
+
+    public void ThreadReceptionBroadcast(){
+
+        new Thread(){
+            @Override
+            public void run(){
+                while(true) {
+                    System.out.println("Thread Broadcast");
+                    get_udp_broadcast_packet();
+                }
+            }
+        }.start();
     }
 }

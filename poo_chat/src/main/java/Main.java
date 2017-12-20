@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+
 public class Main {
     public static ChoisirPseudo cp = new ChoisirPseudo();
     private static MessageReseau mr = new MessageReseau();
@@ -27,11 +28,15 @@ public class Main {
         */
       try {
           cp.choisir_pseudo(user,mr);
-          ThreadReception tr = new ThreadReception(lr);
+          /*ThreadReception tr = new ThreadReception(lr);
           ThreadBroadcastReception tbr = new ThreadBroadcastReception(lr);
-          tr.run();
-          tbr.run();
+          tr.start();
+          tbr.start();*/
 
+          lr.ThreadReceptionBroadcast();
+          TimeUnit.SECONDS.sleep(5);
+          mr.broadcast_udp_packet("Error");
+          System.out.println("Error envoyé");
           ds.demande_session("Jean-Charles",mr);
           em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles",mr);
           String cmd ;
