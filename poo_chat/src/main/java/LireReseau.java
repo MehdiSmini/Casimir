@@ -10,8 +10,7 @@ public class LireReseau {
     public LireReseau() {
         try {
             receiverSocket = new DatagramSocket();
-            receiverSocket.connect(receiverSocket.getLocalSocketAddress());
-            User.setPort(receiverSocket.getPort());
+            User.setPort(receiverSocket.getLocalPort());
             receiverBroadcastSocket = new DatagramSocket(5000);
             receiverBroadcastSocket.setBroadcast(true);
         } catch (Exception e){e.printStackTrace();}
@@ -22,9 +21,11 @@ public class LireReseau {
             /*DatagramSocket receiverSocket = new DatagramSocket();
             User.setPort(receiverSocket.getPort());*/
             while(true) {
+                System.out.println("Port réception : " + User.getPort());
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
                 receiverSocket.receive(receivedPacket);
                 byte[] data = receivedPacket.getData();
+                System.out.println("Lire Reseau packet recu : "+new String(data));
                 td.traiter_data(data,receivedPacket.getAddress());
             }
         } catch ( java.io.IOException e){ e.printStackTrace();}
@@ -36,6 +37,7 @@ public class LireReseau {
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
                 receiverBroadcastSocket.receive(receivedPacket);
                 byte[] data = receivedPacket.getData();
+                System.out.println("Lire Reseau Broadcast packet recu : "+new String(data));
                 td.traiter_data(data,receivedPacket.getAddress());
             }
         } catch ( java.io.IOException e){ e.printStackTrace();}

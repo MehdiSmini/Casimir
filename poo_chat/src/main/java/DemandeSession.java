@@ -5,6 +5,8 @@ public class DemandeSession {
 
     public void demande_session(String pseudo_cible){
         Session session ;
+        System.out.println("Demande de session avec "+pseudo_cible);
+        System.out.println("Liste agents actifs "+User.agents_actifs.toString());
         Main.mr.send_udp_packet("c" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;

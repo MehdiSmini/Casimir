@@ -71,11 +71,14 @@ public class TraiterData {
             Agent agent= traiter_pseudo(d,addr);
             if (!User.agents_actifs.containsKey(agent.getPseudo())) {
             User.add_agent(traiter_pseudo(d,addr));
-            Main.mr.send_udp_packet("a"+User.getPseudo(),agent);}
+            Main.mr.send_udp_packet("a"+User.getPseudo()+User.getPort(),agent);}
         } else if( td == type_data.MESSAGE){
             rm.recevoir_message(traiter_message(d));
         } else if ( td == type_data.SESSION){
+
+            System.out.println("Type Session reçu");
             Session session = traiter_session(d);
+            System.out.println(session);
             if (session.getEtat())
                 ds.get_answer(session);
             else

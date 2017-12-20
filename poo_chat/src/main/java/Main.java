@@ -6,9 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Main {
-    public static ChoisirPseudo cp = new ChoisirPseudo();
+
     public static MessageReseau mr = new MessageReseau();
     public static LireReseau lr = new LireReseau();
+    public static ChoisirPseudo cp = new ChoisirPseudo();
     private static User user = new User();
     private static EnvoyerMessage em = new EnvoyerMessage();
     private static DemandeSession ds = new DemandeSession();
@@ -27,7 +28,7 @@ public class Main {
         ChangerPseudo ca = new ChangerPseudo(cp);
         */
       try {
-          cp.choisir_pseudo(user,mr);
+          cp.choisir_pseudo(user);
 
 
           lr.ThreadReceptionBroadcast();
@@ -46,7 +47,16 @@ public class Main {
                 System.out.println("Message :");
                 String msg = Sc.next();
                 em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible);
-            } else if (cmd.equals("quit")){
+            } else if (cmd.equals("session")){
+              System.out.println("Cible :");
+              String cible = Sc.next();
+              ds.demande_session(cible);
+            } else if (cmd.equals("pseudo")){
+                cp.changerPseudo(user);
+            }
+
+
+            else if (cmd.equals("quit")){
                 break;
             }
           }
