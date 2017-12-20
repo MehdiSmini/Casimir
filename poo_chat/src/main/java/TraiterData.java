@@ -43,6 +43,7 @@ public class TraiterData {
         int i = get_endrank(data);
         String pseudo = new String(remove_padding(java.util.Arrays.copyOfRange(data,0,i-5)));
         Integer port = Integer.parseInt(new String(java.util.Arrays.copyOfRange(data,i-5,i)));
+        System.out.println(pseudo);
         return new Agent(pseudo,addr,port);
     }
 
