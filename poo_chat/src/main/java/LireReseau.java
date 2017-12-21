@@ -38,7 +38,7 @@ public class LireReseau {
                 receiverBroadcastSocket.receive(receivedPacket);
                 byte[] data = receivedPacket.getData();
                 System.out.println("Lire Reseau Broadcast packet recu : "+new String(data));
-                td.traiter_data(data,receivedPacket.getAddress());
+                td.traiter_data_broadcast(data,receivedPacket.getAddress());
             }
         } catch ( java.io.IOException e){ e.printStackTrace();}
     }

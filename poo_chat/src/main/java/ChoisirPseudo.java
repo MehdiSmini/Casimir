@@ -19,8 +19,8 @@ public class ChoisirPseudo {
                 if (new_pseudo.length() < 16 && new_pseudo.length() > 4) {
                     pseudo_state = true;
                     System.out.println("Bonjour " + new_pseudo);
+                    Main.mr.broadcast_udp_packet("a"+User.getPseudo()+new_pseudo+User.getPort());
                     user.setPseudo(new_pseudo);
-                    Main.mr.broadcast_udp_packet("a"+new_pseudo+User.getPort());
                     stocker_pseudo("user_pseudo.csv");
                 } else {
                     System.out.println("Taille non conforme");

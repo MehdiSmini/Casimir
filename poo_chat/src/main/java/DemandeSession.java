@@ -26,11 +26,9 @@ public class DemandeSession {
     }
 
     public void get_answer(Session session){
-        System.out.println("Sessions enregistrées " +User.sessions.toString());
         if (User.sessions.containsKey(session.getPseudo())) {
             Session session1 = new Session(session.getPseudo_cible(), session.getPseudo(), true);
             User.sessions.replace(session1.getPseudo_cible(), session1);
         }
-
     }
 }
