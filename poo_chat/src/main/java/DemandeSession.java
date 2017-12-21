@@ -7,7 +7,7 @@ public class DemandeSession {
         Session session ;
         System.out.println("Demande de session avec "+pseudo_cible);
         System.out.println("Liste agents actifs "+User.agents_actifs.toString());
-        Main.mr.send_udp_packet("c" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
+        Main.mr.send_udp_packet("c0" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
         User.add_session(new Session(User.getPseudo(),pseudo_cible,false));
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
@@ -26,7 +26,8 @@ public class DemandeSession {
     }
 
     public void get_answer(Session session){
-        if (User.sessions.containsKey(session.getPseudo_cible())) {
+        System.out.println("Sessions enregistrées " +User.sessions.toString());
+        if (User.sessions.containsKey(session.getPseudo())) {
             Session session1 = new Session(session.getPseudo_cible(), session.getPseudo(), true);
             User.sessions.replace(session1.getPseudo_cible(), session1);
         }

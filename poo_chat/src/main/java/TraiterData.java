@@ -58,9 +58,10 @@ public class TraiterData {
 
     public Session traiter_session(byte[] data){
         int i = get_endrank(data);
-        String pseudo = new String(remove_padding(java.util.Arrays.copyOfRange(data, 0, i-User.getTaille_pseudo())));
+        Boolean etat = new Boolean(Integer.parseInt(new String(java.util.Arrays.copyOfRange(data,0,1))) == 1);
+        String pseudo = new String(remove_padding(java.util.Arrays.copyOfRange(data, 1, i-User.getTaille_pseudo())));
         String pseudo_cible = new String(remove_padding(java.util.Arrays.copyOfRange(data,i-User.getTaille_pseudo(),i)));
-        return new Session(pseudo,pseudo_cible,false);
+        return new Session(pseudo,pseudo_cible,etat);
     }
 
 
@@ -71,6 +72,7 @@ public class TraiterData {
             Agent agent= traiter_pseudo(d,addr);
             if (!User.agents_actifs.containsKey(agent.getPseudo())) {
             User.add_agent(traiter_pseudo(d,addr));
+            System.out.println(agent + " connecté");
             Main.mr.send_udp_packet("a"+User.getPseudo()+User.getPort(),agent);}
         } else if( td == type_data.MESSAGE){
             rm.recevoir_message(traiter_message(d));
