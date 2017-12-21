@@ -22,6 +22,7 @@ public class DemandeSession {
             elapsedTime = new Date().getTime() - startTime;
 
         }
+        System.out.println("La demande a échoué (cible injoignable)");
         User.sessions.remove(pseudo_cible);
     }
 

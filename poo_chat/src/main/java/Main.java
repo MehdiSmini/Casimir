@@ -18,53 +18,49 @@ public class Main {
     private static Scanner Sc = new Scanner(System.in);
 
     public static void main(String[] args){
-        /*ArrayList<String> test_agents = new ArrayList<String>();
-        test_agents.add("Jean-Pierre");
-        test_agents.add("Jean-Michel");
-        test_agents.add("Jean-Paul");
-        test_agents.add("Marie-Jeanne");
-        test_agents.add("Jeanne-d'arc");
-        cp.setAgents_actifs(test_agents);
-        cp.choisir_pseudo();
-        ChangerPseudo ca = new ChangerPseudo(cp);
-        */
+
       try {
           lr.ThreadReceptionBroadcast();
           lr.ThreadReception();
           mr.broadcast_udp_packet("e"+user.getPort());
-          cp.choisir_pseudo(user);
+          cp.choisir_pseudo();
 
           TimeUnit.SECONDS.sleep(5);
-          //ds.demande_session("Jean-Charles");
-          TimeUnit.SECONDS.sleep(5);
-          //em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles");
+
           String cmd ;
-          while(finished){
+          while(!finished){
               System.out.println(User.agents_actifs.toString());
             cmd = Sc.next();
             if(cmd.equals("msg")){
                 System.out.println("Destinataire :");
                 String cible = Sc.next();
-                System.out.println("Message :");
-                String msg = Sc.next();
-                em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible);
+                if (!user.sessions.containsKey(cible))
+                    System.out.println("Pas de session avec "+cible);
+                else{
+                    System.out.println("Message :");
+                    String msg = Sc.next();
+                    em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible);
+                }
             } else if (cmd.equals("session")){
               System.out.println("Cible :");
               String cible = Sc.next();
-              ds.demande_session(cible);
+              if (!user.agents_actifs.containsKey(cible))
+                  System.out.println(cible+" pas present sur le reseau");
+              else
+                  ds.demande_session(cible);
             } else if (cmd.equals("pseudo")){
-                cp.changerPseudo(user);
+                cp.changerPseudo();
             } else if (cmd.equals("close")){
                 System.out.println("Cible :");
                 String cible = Sc.next() ;
                 if (user.sessions.containsKey(cible))
                     user.sessions.remove(cible);
-            }
-
-            else if (cmd.equals("quit")){
+                else
+                    System.out.println("Pas de session avec "+ cible);
+            } else if (cmd.equals("quit")){
                 mr.broadcast_udp_packet("d"+user.getPseudo()+User.getPort());
                 lr.setRunning(false);
-                finished = false;
+                finished = true;
             }
           }
       }catch (Exception e){}

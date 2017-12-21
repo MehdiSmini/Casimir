@@ -19,9 +19,6 @@ public class Session {
         return etat;
     }
 
-    public void setEtat(Boolean etat) {
-        this.etat = etat;
-    }
 
     @Override
     public String toString() {

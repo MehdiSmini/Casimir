@@ -7,28 +7,33 @@ public class ChoisirPseudo {
     private  Scanner Sc = new Scanner(System.in);
     private Boolean pseudo_state = false;
 
-    public void choisir_pseudo(User user){
-        String last_pseudo = user.getPseudo();
+    public void choisir_pseudo(){
+        String last_pseudo = User.getPseudo();
         pseudo_state = false ;
         while(!pseudo_state) {
-            System.out.println("Rentrez un pseudo (3-9 caractères):");
+            System.out.println("Rentrez un pseudo (3-20 caractères):");
             new_pseudo = Sc.next();
-            if(user.agents_actifs.containsKey(new_pseudo)){
+            if(User.agents_actifs.containsKey(new_pseudo)){
                 System.out.println("Pseudo déja existant");
             } else {
-                if (new_pseudo.length() < 10 && new_pseudo.length() > 3) {
+                if (new_pseudo.length() < 21 && new_pseudo.length() > 2) {
                     pseudo_state = true;
                     System.out.println("Bonjour " + new_pseudo);
-                    Integer taille ;
+                    String taille ;
+                    String port;
                     if(last_pseudo==null)
-                        taille = 4 ;
-                    else if (last_pseudo.length() > 10)
-                        taille = 2;
+                        taille = "4" ;
+                    else if (last_pseudo.length() < 10)
+                        taille = "0"+last_pseudo.length();
                     else
-                        taille = 1;
-                    Main.mr.broadcast_udp_packet("a"+taille+last_pseudo+new_pseudo+User.getPort());
-                    user.setPseudo(new_pseudo);
-                    user.setLast_pseudo(last_pseudo);
+                        taille = ""+last_pseudo.length();
+                    if(User.getPort()<10000)
+                        port="0"+User.getPort();
+                    else
+                        port=""+User.getPort();
+                    Main.mr.broadcast_udp_packet("a"+taille+last_pseudo+new_pseudo+port);
+                    User.setPseudo(new_pseudo);
+                    User.setLast_pseudo(last_pseudo);
                     System.out.println("Dans choisir pseudo "+User.getPseudo());
                     stocker_pseudo("user_pseudo.csv");
                 } else {
@@ -40,9 +45,9 @@ public class ChoisirPseudo {
 
     }
 
-    public void changerPseudo(User user) {
-        choisir_pseudo(user);
-        System.out.println("Nouveau pseudo " + user.getPseudo());
+    public void changerPseudo() {
+        choisir_pseudo();
+        System.out.println("Nouveau pseudo " + User.getPseudo());
     }
 
      public void stocker_pseudo(String chemin){
