@@ -3,9 +3,14 @@ import java.net.*;
 
 public class LireReseau {
 
-    TraiterData td = new TraiterData();
-    DatagramSocket receiverSocket ;
-    DatagramSocket receiverBroadcastSocket;
+    private TraiterData td = new TraiterData();
+    private DatagramSocket receiverSocket ;
+    private DatagramSocket receiverBroadcastSocket;
+    private static Boolean running = true ;
+
+    public static void setRunning(Boolean running) {
+        LireReseau.running = running;
+    }
 
     public LireReseau() {
         try {
@@ -20,7 +25,7 @@ public class LireReseau {
         try {
             /*DatagramSocket receiverSocket = new DatagramSocket();
             User.setPort(receiverSocket.getPort());*/
-            while(true) {
+            while(running) {
                 System.out.println("Port réception : " + User.getPort());
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
                 receiverSocket.receive(receivedPacket);
@@ -33,7 +38,7 @@ public class LireReseau {
 
     public void get_udp_broadcast_packet() {
         try {
-            while(true) {
+            while(running) {
                 DatagramPacket receivedPacket = new DatagramPacket(new byte[Short.MAX_VALUE], Short.MAX_VALUE);
                 receiverBroadcastSocket.receive(receivedPacket);
                 byte[] data = receivedPacket.getData();
@@ -48,10 +53,8 @@ public class LireReseau {
         new Thread(){
             @Override
             public void run(){
-                while(true) {
                     System.out.println("Thread Broadcast");
                     get_udp_broadcast_packet();
-                }
             }
         }.start();
     }
@@ -60,9 +63,8 @@ public class LireReseau {
         new Thread(){
             @Override
             public void run(){
-                System.out.println("Thread Reception");
-                get_udp_packet();
-
+                    System.out.println("Thread Reception");
+                    get_udp_packet();
             }
         }.start();
     }

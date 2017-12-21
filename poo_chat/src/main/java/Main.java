@@ -13,6 +13,7 @@ public class Main {
     private static User user = new User();
     private static EnvoyerMessage em = new EnvoyerMessage();
     private static DemandeSession ds = new DemandeSession();
+    private static boolean finished = false ;
 
     private static Scanner Sc = new Scanner(System.in);
 
@@ -38,7 +39,7 @@ public class Main {
           TimeUnit.SECONDS.sleep(5);
           //em.envoyer_message(new Message("Salut Jean-Charles",false,18,user.getPseudo()),"Jean-Charles");
           String cmd ;
-          while(true){
+          while(finished){
               System.out.println(User.agents_actifs.toString());
             cmd = Sc.next();
             if(cmd.equals("msg")){
@@ -53,11 +54,17 @@ public class Main {
               ds.demande_session(cible);
             } else if (cmd.equals("pseudo")){
                 cp.changerPseudo(user);
+            } else if (cmd.equals("close")){
+                System.out.println("Cible :");
+                String cible = Sc.next() ;
+                if (user.sessions.containsKey(cible))
+                    user.sessions.remove(cible);
             }
 
             else if (cmd.equals("quit")){
-                mr.broadcast_udp_packet("d");
-                return;
+                mr.broadcast_udp_packet("d"+user.getPseudo()+User.getPort());
+                lr.setRunning(false);
+                finished = false;
             }
           }
       }catch (Exception e){}
