@@ -86,6 +86,7 @@ public class TraiterData {
             System.out.println("agents actifs traiter data : " + User.agents_actifs.toString());
             
         } else if( td == type_data.MESSAGE){
+            System.out.println("Type Message reçu");
             rm.recevoir_message(traiter_message(d));
         } else if ( td == type_data.SESSION){
 
@@ -111,6 +112,7 @@ public class TraiterData {
             if (!(User.getPseudo() == null))
                 Main.mr.send_udp_packet("a" +User.getTaille_lastpseudo()+ User.getLast_pseudo()+User.getPseudo() + User.getPort(), new Agent("", addr, traiter_init(d)));
         } else if (td == type_data.CONNEXION) {
+            System.out.println("Evaluation de d dans broadcast :"+new String(d));
             gestion_agents(d,addr);
             System.out.println("agents actifs broadcast traiter data : " + User.agents_actifs.toString());
         } else if (td == type_data.DECONNEXION) {
@@ -126,10 +128,11 @@ public class TraiterData {
 
 
     private void gestion_agents(byte [] d, InetAddress addr) {
-        Integer taille = Integer.parseInt(new String(java.util.Arrays.copyOfRange(d, 0, 1)));
-        String oldPseudo = traiter_pseudo(java.util.Arrays.copyOfRange(d, 1, taille + 1));
+        Integer taille = Integer.parseInt(new String(java.util.Arrays.copyOfRange(d, 0, 2)));
+        System.out.println("Taille gestion agents :"+taille);
+        String oldPseudo = traiter_pseudo(java.util.Arrays.copyOfRange(d, 2, taille + 2));
         System.out.println("old :" + oldPseudo);
-        byte[] d1 = java.util.Arrays.copyOfRange(d, taille + 1, d.length);
+        byte[] d1 = java.util.Arrays.copyOfRange(d, taille + 2, d.length);
         Agent agent = traiter_agent(d1, addr);
         System.out.println("agent :" + agent);
         if (User.agents_actifs.containsKey(oldPseudo)) {

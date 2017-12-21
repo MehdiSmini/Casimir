@@ -10,7 +10,7 @@ public class RecevoirMessage {
             msg.setDate(date);
             session.add_message(msg);
             User.sessions.replace(msg.getEmetteur(),session);
-            System.out.println(msg.getData());// afficher msg
+            System.out.println(msg.getEmetteur()+" : "+msg.getData());// afficher msg
         }
 
     }

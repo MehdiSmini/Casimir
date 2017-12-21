@@ -22,7 +22,7 @@ public class ChoisirPseudo {
                     String taille ;
                     String port;
                     if(last_pseudo==null)
-                        taille = "4" ;
+                        taille = "04" ;
                     else if (last_pseudo.length() < 10)
                         taille = "0"+last_pseudo.length();
                     else
@@ -31,6 +31,7 @@ public class ChoisirPseudo {
                         port="0"+User.getPort();
                     else
                         port=""+User.getPort();
+                    System.out.println("Choisir pseudo taille :"+taille);
                     Main.mr.broadcast_udp_packet("a"+taille+last_pseudo+new_pseudo+port);
                     User.setPseudo(new_pseudo);
                     User.setLast_pseudo(last_pseudo);
