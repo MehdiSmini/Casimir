@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TraiterData {
 
-    public enum type_data{MESSAGE,SESSION,CONNEXION,DECONNEXION,ERROR;}
+    public enum type_data{MESSAGE,SESSION,CONNEXION,DECONNEXION,INIT,ERROR;}
     private RecevoirMessage rm = new RecevoirMessage();
     private AccepterSession as = new AccepterSession();
     private DemandeSession ds = new DemandeSession();
@@ -21,6 +21,8 @@ public class TraiterData {
             return type_data.SESSION ;
         if (data[0]=='d')
             return type_data.DECONNEXION;
+        if (data[0]=='e')
+            return type_data.INIT;
         return type_data.ERROR;
     }
 
@@ -100,7 +102,10 @@ public class TraiterData {
         type_data td = get_type(data);
         System.out.println("traiter data broadcast adress : "+addr.toString());
         d = java.util.Arrays.copyOfRange(data, 1, data.length);
-        if (td == type_data.CONNEXION) {
+        if (td == type_data.INIT){
+            Main.mr.send_udp_packet();
+        }
+        else if (td == type_data.CONNEXION) {
             Agent agent = traiter_pseudo(d, addr);
             System.out.println("agents actifs broadcast traiter data : " + User.agents_actifs.toString());
             if (!User.agents_actifs.containsKey(agent.getPseudo())) {

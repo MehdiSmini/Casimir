@@ -28,11 +28,11 @@ public class Main {
         ChangerPseudo ca = new ChangerPseudo(cp);
         */
       try {
-          cp.choisir_pseudo(user);
-
-
           lr.ThreadReceptionBroadcast();
           lr.ThreadReception();
+          mr.broadcast_udp_packet("e");
+          cp.choisir_pseudo(user);
+
           TimeUnit.SECONDS.sleep(5);
           //ds.demande_session("Jean-Charles");
           TimeUnit.SECONDS.sleep(5);
