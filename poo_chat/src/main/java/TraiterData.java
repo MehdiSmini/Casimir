@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TraiterData {
 
-    public enum type_data{PSEUDO,MESSAGE,SESSION,ERROR;}
+    public enum type_data{MESSAGE,SESSION,CONNEXION,DECONNEXION,ERROR;}
     private RecevoirMessage rm = new RecevoirMessage();
     private AccepterSession as = new AccepterSession();
     private DemandeSession ds = new DemandeSession();
@@ -14,11 +14,13 @@ public class TraiterData {
     // changer les valeurs après ?
     public type_data get_type(byte[] data){
         if (data[0]=='a')
-            return type_data.PSEUDO ;
+            return type_data.CONNEXION ;
         if (data[0]=='b')
             return type_data.MESSAGE ;
         if (data[0]=='c')
             return type_data.SESSION ;
+        if (data[0]=='d')
+            return type_data.DECONNEXION;
         return type_data.ERROR;
     }
 
@@ -50,7 +52,7 @@ public class TraiterData {
     // date : j/m/A H:M
 
     public Message traiter_message(byte[] data){
-        Integer taille = Integer.parseInt(new String(java.util.Arrays.copyOfRange(data,0,2)))  ;
+        Integer taille = Integer.parseInt(new String(java.util.Arrays.copyOfRange(data,0,3)))  ;
         String message = new String(remove_padding(java.util.Arrays.copyOfRange(data,2,2+taille)));
         String pseudo = new String(java.util.Arrays.copyOfRange(data,2+taille,18+taille));
         return new Message(message,true, taille, pseudo);
@@ -58,20 +60,25 @@ public class TraiterData {
 
     public Session traiter_session(byte[] data){
         int i = get_endrank(data);
-        String pseudo = new String(remove_padding(java.util.Arrays.copyOfRange(data, 0, i-User.getTaille_pseudo())));
+        Boolean etat= new Boolean(Integer.parseInt(new String(java.util.Arrays.copyOfRange(data,0,1)))==1);
+        String pseudo = new String(remove_padding(java.util.Arrays.copyOfRange(data, 1, i-User.getTaille_pseudo())));
         String pseudo_cible = new String(remove_padding(java.util.Arrays.copyOfRange(data,i-User.getTaille_pseudo(),i)));
-        return new Session(pseudo,pseudo_cible,false);
+        return new Session(pseudo,pseudo_cible, etat);
     }
 
 
     public void traiter_data(byte[] data, InetAddress addr){
+        System.out.println("traiter data adress : "+addr.toString());
         type_data td = get_type(data);
         d = java.util.Arrays.copyOfRange(data,1,data.length);
-        if( td == type_data.PSEUDO){
+        if( td == type_data.CONNEXION){
             Agent agent= traiter_pseudo(d,addr);
+            System.out.println("agents actifs traiter data : "+User.agents_actifs.toString());
             if (!User.agents_actifs.containsKey(agent.getPseudo())) {
-            User.add_agent(traiter_pseudo(d,addr));
-            Main.mr.send_udp_packet("a"+User.getPseudo()+User.getPort(),agent);}
+            User.add_agent(agent);
+            System.out.println("test traiter data"+agent);
+            //Main.mr.send_udp_packet("a"+User.getPseudo()+User.getPort(),agent);
+            }
         } else if( td == type_data.MESSAGE){
             rm.recevoir_message(traiter_message(d));
         } else if ( td == type_data.SESSION){
@@ -86,6 +93,22 @@ public class TraiterData {
         } else {
             System.out.println("ERRROR");
             // error
+        }
+    }
+
+    public void traiter_data_broadcast(byte[] data, InetAddress addr) {
+        type_data td = get_type(data);
+        System.out.println("traiter data broadcast adress : "+addr.toString());
+        d = java.util.Arrays.copyOfRange(data, 1, data.length);
+        if (td == type_data.CONNEXION) {
+            Agent agent = traiter_pseudo(d, addr);
+            System.out.println("agents actifs broadcast traiter data : " + User.agents_actifs.toString());
+            if (!User.agents_actifs.containsKey(agent.getPseudo())) {
+                User.add_agent(agent);
+                System.out.println("test traiter broadcast data" + agent);
+                Main.mr.send_udp_packet("a" + User.getPseudo() + User.getPort(), agent);
+            }
+
         }
     }
 

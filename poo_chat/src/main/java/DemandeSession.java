@@ -7,32 +7,28 @@ public class DemandeSession {
         Session session ;
         System.out.println("Demande de session avec "+pseudo_cible);
         System.out.println("Liste agents actifs "+User.agents_actifs.toString());
-        Main.mr.send_udp_packet("c" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
+        Main.mr.send_udp_packet("c0" + User.getPseudo() + pseudo_cible, User.agents_actifs.get(pseudo_cible));
+        User.add_session(new Session(User.getPseudo(), pseudo_cible, false));
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
         while (elapsedTime < 500){
             session = User.sessions.get(pseudo_cible);
-            if (session != null) {
-                if (session.getEtat()) {
-                    // messages = get_message_previous_session(session)
-                    // session.setMessages(messages)
-                    System.out.println("Session établie avec " + pseudo_cible);
-                    return;
-                }
+            if (session.getEtat()) {
+                // messages = get_message_previous_session(session)
+                // session.setMessages(messages)
+                System.out.println("Session établie avec " + pseudo_cible);
+                return;
             }
             elapsedTime = new Date().getTime() - startTime;
 
         }
+        User.sessions.remove(pseudo_cible);
     }
 
     public void get_answer(Session session){
-        Session session1 = new Session(session.getPseudo_cible(),session.getPseudo(),false);
-        Session session2 = new Session(session.getPseudo_cible(),session.getPseudo(),true);
-        if (User.sessions.containsValue(session1)){
-            User.sessions.replace(session.getPseudo_cible(),session2);
-        } else {
-            User.add_session(session2);
+        if (User.sessions.containsKey(session.getPseudo())) {
+            Session session1 = new Session(session.getPseudo_cible(), session.getPseudo(), true);
+            User.sessions.replace(session1.getPseudo_cible(), session1);
         }
-
     }
 }

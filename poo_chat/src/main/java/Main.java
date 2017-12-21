@@ -55,9 +55,8 @@ public class Main {
                 cp.changerPseudo(user);
             }
 
-
             else if (cmd.equals("quit")){
-                break;
+                return;
             }
           }
       }catch (Exception e){}
