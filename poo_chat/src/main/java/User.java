@@ -6,8 +6,25 @@ public class User {
 
     private static String pseudo;
 
+    private static String last_pseudo;
+
+    public static String getLast_pseudo() {
+        return last_pseudo;
+    }
+
+    public static void setLast_pseudo(String last_pseudo) {
+        User.last_pseudo = last_pseudo;
+    }
+
     public static Integer getTaille_pseudo() {
         return pseudo.length();
+    }
+
+    public static Integer getTaille_lastpseudo() {
+        if (!(last_pseudo==null))
+            return last_pseudo.length();
+        else
+            return 4;
     }
 
     public static void add_session(Session session) {

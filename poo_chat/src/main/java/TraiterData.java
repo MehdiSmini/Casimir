@@ -113,7 +113,7 @@ public class TraiterData {
             else
                 as.accepter_session(session);
         } else {
-            System.out.println("ERRROR");
+            System.out.println("ERROR");
             // error
         }
     }
@@ -122,17 +122,35 @@ public class TraiterData {
         type_data td = get_type(data);
         System.out.println("traiter data broadcast adress : "+addr.toString());
         d = java.util.Arrays.copyOfRange(data, 1, data.length);
-        if (td == type_data.INIT)
-            Main.mr.send_udp_packet("a"+ User.getPseudo()+User.getPort(),new Agent("",addr,traiter_init(d)));
-        else if (td == type_data.CONNEXION) {
-            Agent agent = traiter_agent(d, addr);
-            System.out.println("agents actifs broadcast traiter data : " + User.agents_actifs.toString());
-            if (!User.agents_actifs.containsKey(agent.getPseudo())) {
+        if (td == type_data.INIT) {
+            System.out.println((User.getPseudo() == null));
+            System.out.println(User.getPseudo());
+            if (!(User.getPseudo() == null))
+                Main.mr.send_udp_packet("a" +User.getTaille_lastpseudo()+ User.getLast_pseudo()+User.getPseudo() + User.getPort(), new Agent("", addr, traiter_init(d)));
+        } else if (td == type_data.CONNEXION) {
+            Integer taille = Integer.parseInt(new String(java.util.Arrays.copyOfRange(d,0,1)));
+            String oldPseudo = traiter_pseudo(java.util.Arrays.copyOfRange(d,1,taille+1));
+            System.out.println("old :"+oldPseudo);
+            byte[] d1 = java.util.Arrays.copyOfRange(d,taille+1,d.length);
+            Agent agent = traiter_agent(d1, addr);
+            System.out.println("agent :"+agent);
+            if(User.agents_actifs.containsKey(oldPseudo)) {
+                System.out.println("Ancien pseudo deja existant");
+                User.agents_actifs.remove(oldPseudo);}
+            if (!User.agents_actifs.containsKey(agent.getPseudo()))
+                User.add_agent(agent);
+            if (User.sessions.containsKey(oldPseudo)) {
+                Session newSession = User.sessions.remove(oldPseudo);
+                newSession.setPseudo_cible(agent.getPseudo());
+                User.add_session(newSession);
+            }
+
+                System.out.println("agents actifs broadcast traiter data : " + User.agents_actifs.toString());
+            /*if (!User.agents_actifs.containsKey(agent.getPseudo())) {
                 User.add_agent(agent);
                 System.out.println("test traiter broadcast data" + agent);
                 //Main.mr.send_udp_packet("a" + User.getPseudo() + User.getPort(), agent);
-            }
-
+            }*/
         } else if (td == type_data.DECONNEXION) {
             Agent agent = traiter_agent(d,addr);
             if (User.agents_actifs.containsKey(agent.getPseudo())){
@@ -141,6 +159,7 @@ public class TraiterData {
             }
         } else
             System.out.println("Error");
+
     }
 
 }
