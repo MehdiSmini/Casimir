@@ -11,15 +11,15 @@ public class ChoisirPseudo {
         String last_pseudo = user.getPseudo();
         pseudo_state = false ;
         while(!pseudo_state) {
-            System.out.println("Rentrez un pseudo (5-15 caractères):");
+            System.out.println("Rentrez un pseudo (3-9 caractères):");
             new_pseudo = Sc.next();
             if(user.agents_actifs.containsKey(new_pseudo)){
                 System.out.println("Pseudo déja existant");
             } else {
-                if (new_pseudo.length() < 16 && new_pseudo.length() > 4) {
+                if (new_pseudo.length() < 10 && new_pseudo.length() > 3) {
                     pseudo_state = true;
                     System.out.println("Bonjour " + new_pseudo);
-                    Main.mr.broadcast_udp_packet("a"+User.getPseudo()+new_pseudo+User.getPort());
+                    Main.mr.broadcast_udp_packet("a"+User.getTaille_pseudo()+User.getPseudo()+new_pseudo+User.getPort());
                     user.setPseudo(new_pseudo);
                     stocker_pseudo("user_pseudo.csv");
                 } else {

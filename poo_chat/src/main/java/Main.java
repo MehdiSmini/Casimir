@@ -30,7 +30,7 @@ public class Main {
       try {
           lr.ThreadReceptionBroadcast();
           lr.ThreadReception();
-          mr.broadcast_udp_packet("e");
+          mr.broadcast_udp_packet("e"+user.getPort());
           cp.choisir_pseudo(user);
 
           TimeUnit.SECONDS.sleep(5);
@@ -56,6 +56,7 @@ public class Main {
             }
 
             else if (cmd.equals("quit")){
+                mr.broadcast_udp_packet("d");
                 return;
             }
           }
