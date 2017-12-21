@@ -20,11 +20,11 @@ public class User {
         return pseudo.length();
     }
 
-    public static Integer getTaille_lastpseudo() {
+    public static String getTaille_lastpseudo() {
         if (!(last_pseudo==null))
-            return last_pseudo.length();
+            return ""+last_pseudo.length();
         else
-            return 4;
+            return "04";
     }
 
     public static void add_session(Session session) {

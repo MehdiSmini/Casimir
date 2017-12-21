@@ -56,7 +56,7 @@ public class TraiterData {
     public Message traiter_message(byte[] data){
         Integer taille = Integer.parseInt(new String(java.util.Arrays.copyOfRange(data,0,3)))  ;
         String message = new String(remove_padding(java.util.Arrays.copyOfRange(data,3,3+taille)));
-        String pseudo = new String(java.util.Arrays.copyOfRange(data,3+taille,24+taille));
+        String pseudo = new String(remove_padding(java.util.Arrays.copyOfRange(data,3+taille,24+taille)));
         return new Message(message,true, taille, pseudo);
     }
 
