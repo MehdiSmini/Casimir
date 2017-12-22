@@ -21,8 +21,12 @@ public class User {
     }
 
     public static String getTaille_lastpseudo() {
-        if (!(last_pseudo==null))
-            return ""+last_pseudo.length();
+        if (!(last_pseudo==null)) {
+            if (last_pseudo.length()<10)
+                return "0"+last_pseudo.length();
+            else
+                return "" + last_pseudo.length();
+        }
         else
             return "04";
     }

@@ -8,6 +8,7 @@ public class AccepterSession {
             //messages = get_messages_previous_session
             //session.setMessages(messages);
             User.add_session(session1);
+            Main.fenetre.addToSessionBox(session1.getPseudo_cible());
         }
     }
 }

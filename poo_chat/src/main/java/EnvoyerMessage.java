@@ -12,6 +12,7 @@ public class EnvoyerMessage {
             System.out.println("La taille du message doit être inférieure à 1000 caractères");
             return;
         }
+        System.out.println(pseudo_cible);
         Main.mr.send_udp_packet('b' + taille + msg.getData() + msg.getEmetteur(),User.agents_actifs.get(pseudo_cible));
     }
 

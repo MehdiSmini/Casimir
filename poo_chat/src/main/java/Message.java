@@ -55,4 +55,12 @@ public class Message {
         this.etat = etat;
         this.taille=taille;
     }
+
+    @Override
+    public String toString() {
+        return
+                 date.toInstant() + " "+
+                 emetteur + " :  " +
+                 data  ;
+    }
 }

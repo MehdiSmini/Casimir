@@ -1,4 +1,6 @@
 
+import sun.awt.WindowClosingListener;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.util.*;
@@ -11,19 +13,37 @@ public class Main {
     public static LireReseau lr = new LireReseau();
     public static ChoisirPseudo cp = new ChoisirPseudo();
     private static User user = new User();
-    private static EnvoyerMessage em = new EnvoyerMessage();
-    private static DemandeSession ds = new DemandeSession();
+    public static EnvoyerMessage em = new EnvoyerMessage();
+    public static DemandeSession ds = new DemandeSession();
     private static boolean finished = false ;
+    public static Fenetre fenetre;
 
     private static Scanner Sc = new Scanner(System.in);
+
+    public static void setFinished(boolean finished) {
+        Main.finished = finished;
+    }
 
     public static void main(String[] args){
 
       try {
+          LirePseudo lp = new LirePseudo();
+          User.setPseudo(lp.lire_pseudo());
+          if(User.getPseudo()==null){
+            FenetrePseudo fenpseudo;
+            fenpseudo= new FenetrePseudo();
+
+              while (User.getPseudo()==null){
+                  TimeUnit.SECONDS.sleep(1);
+                  System.out.println(User.getPseudo());
+              }
+          }
+          fenetre= new Fenetre();
+
           lr.ThreadReceptionBroadcast();
           lr.ThreadReception();
           mr.broadcast_udp_packet("e"+user.getPort());
-          cp.choisir_pseudo();
+          //cp.choisir_pseudo();
 
           TimeUnit.SECONDS.sleep(5);
 
@@ -40,6 +60,7 @@ public class Main {
                     System.out.println("Message :");
                     String msg = Sc.next();
                     em.envoyer_message(new Message(msg,false,msg.length(),user.getPseudo()),cible);
+
                 }
             } else if (cmd.equals("session")){
               System.out.println("Cible :");
@@ -49,7 +70,7 @@ public class Main {
               else
                   ds.demande_session(cible);
             } else if (cmd.equals("pseudo")){
-                cp.changerPseudo();
+                //cp.changerPseudo();
             } else if (cmd.equals("close")){
                 System.out.println("Cible :");
                 String cible = Sc.next() ;

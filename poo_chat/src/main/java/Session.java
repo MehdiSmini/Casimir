@@ -6,6 +6,8 @@ public class Session {
         this.messages = messages;
     }
 
+    private Integer nbNewMessages=0;
+
     public void setPseudo(String pseudo) {
 
         this.pseudo = pseudo;
@@ -49,9 +51,25 @@ public class Session {
         this.etat = etat;
     }
 
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+
+    public Integer getNbNewMessages() {
+        return nbNewMessages;
+    }
+
+    public void decreaseNbNewMessages() {
+        this.nbNewMessages -= 1;
+    }
+
     public void add_message(Message msg){
         messages.add(msg);
+        this.nbNewMessages+=1;
+
     }
+
+
 
 
 }

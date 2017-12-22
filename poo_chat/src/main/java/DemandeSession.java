@@ -30,6 +30,7 @@ public class DemandeSession {
         if (User.sessions.containsKey(session.getPseudo())) {
             Session session1 = new Session(session.getPseudo_cible(), session.getPseudo(), true);
             User.sessions.replace(session1.getPseudo_cible(), session1);
+            Main.fenetre.addToSessionBox(session1.getPseudo_cible());
         }
     }
 }

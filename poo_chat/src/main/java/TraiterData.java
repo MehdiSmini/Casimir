@@ -138,11 +138,15 @@ public class TraiterData {
         if (User.agents_actifs.containsKey(oldPseudo)) {
             System.out.println("Ancien pseudo deja existant");
             User.agents_actifs.remove(oldPseudo);
+            Main.fenetre.removeFromAgentBox(oldPseudo);
         }
         if (!User.agents_actifs.containsKey(agent.getPseudo()))
+            Main.fenetre.addToAgentsBox(agent.getPseudo());
             User.add_agent(agent);
         if (User.sessions.containsKey(oldPseudo)) {
             Session newSession = User.sessions.remove(oldPseudo);
+            Main.fenetre.removeFromSessionBox(oldPseudo);
+            Main.fenetre.addToSessionBox(agent.getPseudo());
             newSession.setPseudo_cible(agent.getPseudo());
             User.add_session(newSession);
         }
